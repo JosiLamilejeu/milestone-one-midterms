@@ -81,28 +81,39 @@ public class AdminSystem {
     }
         }
         
-        public boolean addPartyMember(String partyname, String usernames) {
+        public boolean addPartyMember(String partyname, String username) {
     String getPartySql = "SELECT party_id FROM Parties WHERE partyname = ?";
+    String checkUserSql = "SELECT username FROM Users WHERE username = ? AND role = ?";
     String insertMemberSql = "INSERT INTO PartyMembers(party_id, usernames) VALUES (?, ?)";
 
     try (Connection conn = Database.connect();
-         PreparedStatement getPartyStmt = conn.prepareStatement(getPartySql)) {
+         PreparedStatement getPartyStmt = conn.prepareStatement(getPartySql);
+         PreparedStatement checkUserStmt = conn.prepareStatement(checkUserSql)) {
 
         getPartyStmt.setString(1, partyname);
-        ResultSet rs = getPartyStmt.executeQuery();
+        ResultSet partyRs = getPartyStmt.executeQuery();
 
-        if (rs.next()) {
-            int partyId = rs.getInt("party_id");
-
-            try (PreparedStatement insertStmt = conn.prepareStatement(insertMemberSql)) {
-                insertStmt.setInt(1, partyId);
-                insertStmt.setString(2, usernames);
-                insertStmt.executeUpdate();
-                return true;
-            }
-        } else {
+        if (!partyRs.next()) {
             System.out.println("Party not found.");
             return false;
+        }
+
+        int partyId = partyRs.getInt("party_id");
+
+        checkUserStmt.setString(1, username);
+        checkUserStmt.setString(2, "adventurer");
+        ResultSet userRs = checkUserStmt.executeQuery();
+
+        if (!userRs.next()) {
+            System.out.println("User is not a registered adventurer.");
+            return false;
+        }
+
+        try (PreparedStatement insertStmt = conn.prepareStatement(insertMemberSql)) {
+            insertStmt.setInt(1, partyId);
+            insertStmt.setString(2, username);
+            insertStmt.executeUpdate();
+            return true;
         }
 
     } catch (SQLException e) {
