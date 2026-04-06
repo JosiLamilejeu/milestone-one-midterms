@@ -57,13 +57,14 @@ public class MilestoneOne {
                                 while (guildmasterMenu) {
                                     System.out.println("\n=== GUILDMASTER MENU ===");
                                     System.out.println("1. Register Receptionist");
-                                    System.out.println("2. Remove Receptionist");
-                                    System.out.println("3. Remove Adventurer");
-                                    System.out.println("4. Remove Adventurer from a Party");
-                                    System.out.println("5. Remove Party");
-                                    System.out.println("6. Remove Quest");
-                                    System.out.println("7. Remove Quest Reservation");
-                                    System.out.println("8. Log out");
+                                    System.out.println("2. View Registered Receptionists");
+                                    System.out.println("3. Remove Receptionist");
+                                    System.out.println("4. Remove Adventurer");
+                                    System.out.println("5. Remove Adventurer from a Party");
+                                    System.out.println("6. Remove Party");
+                                    System.out.println("7. Remove Quest");
+                                    System.out.println("8. Remove Quest Reservation");
+                                    System.out.println("9. Log out");
                                     System.out.print("Choice: ");
                                     choice = s.nextInt();
                                     s.nextLine();
@@ -82,8 +83,11 @@ public class MilestoneOne {
                                                 System.out.println("Failed to register receptionist.");
                                             }
                                             break;
-
                                         case 2:
+                                            repo.viewRegisteredAdventurers();
+                                            break;
+
+                                        case 3:
                                             System.out.print("Enter receptionist username to remove: ");
                                             username = s.nextLine();
 
@@ -94,7 +98,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 3:
+                                        case 4:
                                             System.out.print("Enter adventurer username to remove: ");
                                             username = s.nextLine();
 
@@ -105,7 +109,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 4:
+                                        case 5:
                                             System.out.print("Enter party name: ");
                                             partyName = s.nextLine();
 
@@ -119,7 +123,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 5:
+                                        case 6:
                                             System.out.print("Enter party name to remove: ");
                                             partyName = s.nextLine();
 
@@ -130,7 +134,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 6:
+                                        case 7:
                                             System.out.print("Enter quest name to remove: ");
                                             questName = s.nextLine();
 
@@ -141,7 +145,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 7:
+                                        case 8:
                                             System.out.print("Enter quest name to remove reservation: ");
                                             questName = s.nextLine();
 
@@ -152,7 +156,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 8:
+                                        case 9:
                                             if (gldsys.logoutUser()) {
                                                 guildmasterMenu = false;
                                                 System.out.println("Logged out successfully.");
@@ -175,12 +179,13 @@ public class MilestoneOne {
                                 while (receptionistMenu) {
                                     System.out.println("\n=== RECEPTIONIST MENU ===");
                                     System.out.println("1. Register Adventurer");
-                                    System.out.println("2. Update Adventurer");
-                                    System.out.println("3. Create Party");
-                                    System.out.println("4. Add Party Member");
-                                    System.out.println("5. Create Quest");
-                                    System.out.println("6. Update Quests");
-                                    System.out.println("7. Log out");
+                                    System.out.println("2. Register Adventurer");
+                                    System.out.println("3. Update Adventurer");
+                                    System.out.println("4. Create Party");
+                                    System.out.println("5. Add Party Member");
+                                    System.out.println("6. Create Quest");
+                                    System.out.println("7. Update Quests");
+                                    System.out.println("8. Log out");
                                     System.out.print("Choice: ");
                                     choice = s.nextInt();
                                     s.nextLine();
@@ -215,8 +220,11 @@ public class MilestoneOne {
                                                 System.out.println("Age is not appropriate.");
                                             }
                                             break;
-
                                         case 2:
+                                            repo.viewRegisteredAdventurers();
+                                            break;
+
+                                        case 3:
                                             System.out.print("Enter adventurer username: ");
                                             username = s.nextLine();
 
@@ -230,7 +238,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 3:
+                                        case 4:
                                             System.out.print("Name of the party: ");
                                             partyName = s.nextLine();
 
@@ -256,7 +264,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 4:
+                                        case 5:
                                             System.out.print("Enter existing party name: ");
                                             partyName = s.nextLine();
 
@@ -276,7 +284,7 @@ public class MilestoneOne {
                                             } while (option.equalsIgnoreCase("yes"));
                                             break;
 
-                                        case 5:
+                                        case 6:
                                             do {
                                                 System.out.print("Enter quest name: ");
                                                 questName = s.nextLine();
@@ -293,7 +301,7 @@ public class MilestoneOne {
                                             } while (option.equalsIgnoreCase("yes"));
                                             break;
 
-                                        case 6:
+                                        case 7:
                                             System.out.print("Enter quest name to mark as completed: ");
                                             questName = s.nextLine();
 
@@ -304,7 +312,7 @@ public class MilestoneOne {
                                             }
                                             break;
 
-                                        case 7:
+                                        case 8:
                                             if (gldsys.logoutUser()) {
                                                 receptionistMenu = false;
                                                 System.out.println("Logged out successfully.");
