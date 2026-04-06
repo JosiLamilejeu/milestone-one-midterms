@@ -83,8 +83,13 @@ public class MilestoneOne {
                                                 System.out.println("Failed to register receptionist.");
                                             }
                                             break;
+
                                         case 2:
-                                            repo.viewRegisteredReceptionists();
+                                            if (repo.viewRegisteredReceptionists()) {
+                                                System.out.println("Receptionist list loaded successfully.");
+                                            } else {
+                                                System.out.println("No registered receptionists found.");
+                                            }
                                             break;
 
                                         case 3:
@@ -220,8 +225,13 @@ public class MilestoneOne {
                                                 System.out.println("Age is not appropriate.");
                                             }
                                             break;
+
                                         case 2:
-                                            repo.viewRegisteredAdventurers();
+                                            if (repo.viewRegisteredAdventurers()) {
+                                                System.out.println("Adventurer list loaded successfully.");
+                                            } else {
+                                                System.out.println("No registered adventurers found.");
+                                            }
                                             break;
 
                                         case 3:
@@ -346,11 +356,19 @@ public class MilestoneOne {
                                     switch (choice) {
                                         case 1:
                                             System.out.println("\nFetching quest list...");
-                                            repo.viewQuestList();
+                                            if (repo.viewQuestList()) {
+                                                System.out.println("Quest list loaded successfully.");
+                                            } else {
+                                                System.out.println("No quests found.");
+                                            }
                                             break;
 
                                         case 2:
-                                            repo.viewQuestList();
+                                            if (!repo.viewQuestList()) {
+                                                System.out.println("No quests available.");
+                                                break;
+                                            }
+
                                             System.out.print("Enter quest name: ");
                                             questName = s.nextLine();
 
@@ -400,13 +418,21 @@ public class MilestoneOne {
 
                                         case 3:
                                             System.out.println("\nFetching your party details...");
-                                            repo.viewCurrentUserPartyList(user.getUsername());
+                                            if (repo.viewCurrentUserPartyList(user.getUsername())) {
+                                                System.out.println("Party details loaded successfully.");
+                                            } else {
+                                                System.out.println("You are not in any party.");
+                                            }
                                             break;
 
                                         case 4:
                                             if (user != null && user.getRole().equalsIgnoreCase("adventurer")) {
                                                 System.out.println("\nFetching your profile...");
-                                                repo.viewCurrentAdventurerDetails(user.getUsername());
+                                                if (repo.viewCurrentAdventurerDetails(user.getUsername())) {
+                                                    System.out.println("Profile loaded successfully.");
+                                                } else {
+                                                    System.out.println("No adventurer details found.");
+                                                }
                                             } else {
                                                 System.out.println("Only adventurers can view adventurer details.");
                                             }
