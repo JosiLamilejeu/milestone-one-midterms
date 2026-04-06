@@ -24,10 +24,7 @@ public class Repository {
                 return new User(
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("role"),
-                        rs.getString("rank"),
-                        rs.getString("race"),
-                        rs.getString("userClass")
+                        rs.getString("role")
 
                 );
             }
