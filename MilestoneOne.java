@@ -13,6 +13,7 @@ public class MilestoneOne {
         Repository repo = new Repository();
         GuildSystem gldsys = new GuildSystem(repo);
         AdminSystem admnsys = new AdminSystem();
+        gldsys.clearCurrentUser();
 
         boolean mainMenu = true;
 
