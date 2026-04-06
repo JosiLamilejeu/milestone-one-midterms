@@ -76,7 +76,11 @@ public class MilestoneOne {
                                             System.out.print("Password of the Receptionist: ");
                                             String receptionistPassword = s.nextLine();
 
-                                            admnsys.addUser(receptionistUsername, receptionistPassword, "receptionist");
+                                            if (admnsys.addUser(receptionistUsername, receptionistPassword, "receptionist")) {
+                                                System.out.println("Receptionist registered successfully!");
+                                            } else {
+                                                System.out.println("Failed to register receptionist.");
+                                            }
                                             break;
 
                                         case 2:
@@ -202,10 +206,13 @@ public class MilestoneOne {
                                                 System.out.print("Class of the Adventurer: ");
                                                 String adventurerClass = s.nextLine();
 
-                                                admnsys.addAdventurer(adventurerUsername, adventurerPassword, adventurerRace, adventurerClass);
-                                                System.out.println("Adventurer Registered!");
+                                                if (admnsys.addAdventurer(adventurerUsername, adventurerPassword, adventurerRace, adventurerClass)) {
+                                                    System.out.println("Adventurer registered successfully!");
+                                                } else {
+                                                    System.out.println("Failed to register adventurer.");
+                                                }
                                             } else {
-                                                System.out.println("Age is not appropriate");
+                                                System.out.println("Age is not appropriate.");
                                             }
                                             break;
 
@@ -244,6 +251,8 @@ public class MilestoneOne {
                                                     option = s.nextLine();
 
                                                 } while (option.equalsIgnoreCase("yes"));
+                                            } else {
+                                                System.out.println("Failed to create party.");
                                             }
                                             break;
 
@@ -328,6 +337,7 @@ public class MilestoneOne {
 
                                     switch (choice) {
                                         case 1:
+                                            System.out.println("\nFetching quest list...");
                                             repo.viewQuestList();
                                             break;
 
@@ -361,7 +371,7 @@ public class MilestoneOne {
                                                         if (gldsys.reserveQuestByAdventurer(questName, user.getUsername())) {
                                                             System.out.println("Quest reserved successfully for yourself!");
                                                         } else {
-                                                            System.out.println("Failed to reserve quest.");
+                                                            System.out.println("Failed to reserve quest for yourself.");
                                                         }
                                                         break;
 
@@ -369,7 +379,7 @@ public class MilestoneOne {
                                                         if (gldsys.reserveQuestByParty(questName, partyName)) {
                                                             System.out.println("Quest reserved successfully for party!");
                                                         } else {
-                                                            System.out.println("Failed to reserve quest.");
+                                                            System.out.println("Failed to reserve quest for party.");
                                                         }
                                                         break;
 
@@ -381,11 +391,13 @@ public class MilestoneOne {
                                             break;
 
                                         case 3:
+                                            System.out.println("\nFetching your party details...");
                                             repo.viewCurrentUserPartyList(user.getUsername());
                                             break;
 
                                         case 4:
                                             if (user != null && user.getRole().equalsIgnoreCase("adventurer")) {
+                                                System.out.println("\nFetching your profile...");
                                                 repo.viewCurrentAdventurerDetails(user.getUsername());
                                             } else {
                                                 System.out.println("Only adventurers can view adventurer details.");
@@ -423,7 +435,7 @@ public class MilestoneOne {
                     break;
 
                 default:
-                    System.out.println("Invalid Choice!");
+                    System.out.println("Invalid choice.");
                     break;
             }
         }
