@@ -20,4 +20,8 @@ public class User {
     public String getRole() {
         return role;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> Josh
