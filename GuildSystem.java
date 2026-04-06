@@ -70,6 +70,18 @@ public class GuildSystem {
         return false;
     }
 }
+    public void clearCurrentUser() {
+    String sql = "DELETE FROM CurrentUsers";
+
+    try (Connection conn = Database.connect();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.executeUpdate();
+
+    } catch (SQLException e) {
+        System.out.println("Clear current user error: " + e.getMessage());
+    }
+}
     
     public boolean reserveQuestByParty(String questName, String partyName) {
         String checkQuestSql = "SELECT reservation_status FROM Quests WHERE quest_name = ?";
