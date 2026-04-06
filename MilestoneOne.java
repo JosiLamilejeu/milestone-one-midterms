@@ -179,7 +179,7 @@ public class MilestoneOne {
                                 while (receptionistMenu) {
                                     System.out.println("\n=== RECEPTIONIST MENU ===");
                                     System.out.println("1. Register Adventurer");
-                                    System.out.println("2. Register Adventurer");
+                                    System.out.println("2. View Registered Adventurers");
                                     System.out.println("3. Update Adventurer");
                                     System.out.println("4. Create Party");
                                     System.out.println("5. Add Party Member");
