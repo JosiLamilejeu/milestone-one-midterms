@@ -84,7 +84,7 @@ public class MilestoneOne {
                                             }
                                             break;
                                         case 2:
-                                            repo.viewRegisteredAdventurers();
+                                            repo.viewRegisteredReceptionists();
                                             break;
 
                                         case 3:
