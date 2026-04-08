@@ -79,11 +79,11 @@ public class Repository {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new User(
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("role")
-                );
+                return new User.Builder()
+                    .setUsername(rs.getString("username"))
+                    .setPassword(rs.getString("password"))
+                    .setRole(rs.getString("role"))
+                    .build();
             }
 
         } catch (SQLException e) {
