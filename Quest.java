@@ -13,10 +13,18 @@ public class Quest {
         this.reservedByName = builder.reservedByName;
     }
 
-    public String getQuestName() { return questName; }
-    public String getReservationStatus() { return reservationStatus; }
-    public String getReservedByType() { return reservedByType; }
-    public String getReservedByName() { return reservedByName; }
+    public String getQuestName() {
+        return questName;
+    }
+    public String getReservationStatus() {
+        return reservationStatus;
+    }
+    public String getReservedByType() {
+        return reservedByType;
+    }
+    public String getReservedByName() {
+        return reservedByName;
+    }
 
     public static class Builder {
         private String questName;
