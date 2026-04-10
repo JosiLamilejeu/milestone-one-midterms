@@ -351,7 +351,7 @@ public class MilestoneOne {
                                     switch (choice) {
                                         case 1:
                                             System.out.println("\nFetching quest list...");
-                                            if (repo.viewQuestList()) {
+                                            if (repo.viewQuestListWithResponse()) {
                                                 System.out.println("Quest list loaded successfully.");
                                             } else {
                                                 System.out.println("No quests found.");
@@ -359,7 +359,7 @@ public class MilestoneOne {
                                             break;
 
                                         case 2:
-                                            if (!repo.viewQuestList()) {
+                                            if (!repo.viewQuestListWithResponse()) {
                                                 System.out.println("No quests available.");
                                                 break;
                                             }
