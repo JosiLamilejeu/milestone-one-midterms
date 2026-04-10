@@ -1,6 +1,7 @@
 package studentdatabase.task3.milestoneone;
 
 import java.sql.*;
+import java.util.*;
 
 public class Repository {
     private final String dbURL;
@@ -306,44 +307,58 @@ public class Repository {
         }
     }
 
-    public boolean viewQuestList() {
+    public List<Quest> getAllQuests() {
         String sql = "SELECT quest_name, reservation_status, reserved_by_type, reserved_by_name FROM Quests";
+        List<Quest> quests = new ArrayList<>();
 
         try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
-            System.out.println("\n=== QUEST LIST ===");
+               while (rs.next()) {
+                   Quest quest = new Quest.Builder()
+                       .setQuestName(rs.getString("quest_name"))
+                       .setReservationStatus(rs.getString("reservation_status"))
+                       .setReservedByType(rs.getString("reserved_by_type"))
+                       .setReservedByName(rs.getString("reserved_by_name"))
+                       .build();
 
-            boolean found = false;
-            int count = 1;
+                   quests.add(quest);
+               }
+           } catch (SQLException e) {
+               System.out.println("Get quests error: " + e.getMessage());
+           }
 
-            while (rs.next()) {
-                System.out.println(count + ".");
-                System.out.println("Quest Name: " + rs.getString("quest_name"));
-                System.out.println("Reservation Status: " + rs.getString("reservation_status"));
-
-                String reservedByType = rs.getString("reserved_by_type");
-                String reservedByName = rs.getString("reserved_by_name");
-
-                if (reservedByType != null && reservedByName != null) {
-                    System.out.println("Reserved By: " + reservedByType + " - " + reservedByName);
-                } else {
-                    System.out.println("Reserved By: None");
-                }
-
-                System.out.println();
-                count++;
-                found = true;
-            }
-
-            return found;
-
-        } catch (SQLException e) {
-            System.out.println("View quest list error: " + e.getMessage());
-            return false;
-        }
+       return quests;
     }
+    
+    public boolean viewQuestListWithResponse() {
+    List<Quest> quests = getAllQuests();
+
+    if (quests.isEmpty()) {
+        System.out.println("\nNo quests available.");
+        return false;
+    }
+
+    System.out.println("\n=== QUEST LIST ===");
+
+    int count = 1;
+    for (Quest q : quests) {
+        System.out.println(count++ + ".");
+        System.out.println("Quest Name: " + q.getQuestName());
+        System.out.println("Reservation Status: " + q.getReservationStatus());
+
+        if (q.getReservedByType() != null && q.getReservedByName() != null) {
+            System.out.println("Reserved By: " + q.getReservedByType() + " - " + q.getReservedByName());
+        } else {
+            System.out.println("Reserved By: None");
+        }
+
+        System.out.println();
+    }
+
+    return true;
+}
 
     public boolean reserveQuestByAdventurer(String questName, String username) {
         String checkQuestSql = "SELECT reservation_status FROM Quests WHERE quest_name = ?";
@@ -708,4 +723,3 @@ public class Repository {
         }
     }
 }
-
