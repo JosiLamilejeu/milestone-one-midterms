@@ -714,7 +714,7 @@ public class Repository {
         private String path;
         
         public RepositoryBuilder setDatabasePath() {
-            this.path = "jdbc:sqlite:adventurersguild.db";
+            this.path = "jdbc:sqlite:Milestone1.db";
             return this;
         }
         public Repository build() {
