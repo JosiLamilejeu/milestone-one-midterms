@@ -1,30 +1,42 @@
 public class User {
-    private final String username;
-    private final String password;
-    private final String role;
+    private final String USERNAME;
+    private final String PASSWORD;
+    private final String ROLE;
 
-    private User(Builder builder) {
-        this.username = builder.username;
-        this.password = builder.password;
-        this.role = builder.role;
+    private User(UserBuilder builder) {
+        this.USERNAME = builder.username;
+        this.PASSWORD = builder.password;
+        this.ROLE = builder.role;
+    }
+    
+    public String getUsername() {
+        return USERNAME;
     }
 
-    public static class Builder {
+    public String getPassword() {
+        return PASSWORD;
+    }
+
+    public String getRole() {
+        return ROLE;
+    }
+
+    public static class UserBuilder {
         private String username;
         private String password;
         private String role;
 
-        public Builder setUsername(String username) {
+        public UserBuilder setUsername(String username) {
             this.username = username;
             return this;
         }
 
-        public Builder setPassword(String password) {
+        public UserBuilder setPassword(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder setRole(String role) {
+        public UserBuilder setRole(String role) {
             this.role = role;
             return this;
         }
@@ -32,17 +44,5 @@ public class User {
         public User build() {
             return new User(this);
         }
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRole() {
-        return role;
     }
 }
