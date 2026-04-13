@@ -1,53 +1,53 @@
 package studentdatabase.task3.m1;
 
 public class Quest {
-    private final String questName;
-    private final String reservationStatus;
-    private final String reservedByType;
-    private final String reservedByName;
+    private final String QUEST_NAME;
+    private final String RESERVATION_STATUS;
+    private final String RESERVED_BY_TYPE;
+    private final String RESERVED_BY_NAME;
 
-    private Quest(Builder builder) {
-        this.questName = builder.questName;
-        this.reservationStatus = builder.reservationStatus;
-        this.reservedByType = builder.reservedByType;
-        this.reservedByName = builder.reservedByName;
+    private Quest(QuestBuilder builder) {
+        this.QUEST_NAME = builder.questName;
+        this.RESERVATION_STATUS = builder.reservationStatus;
+        this.RESERVED_BY_TYPE = builder.reservedByType;
+        this.RESERVED_BY_NAME = builder.reservedByName;
     }
 
     public String getQuestName() {
-        return questName;
+        return QUEST_NAME;
     }
     public String getReservationStatus() {
-        return reservationStatus;
+        return RESERVATION_STATUS;
     }
     public String getReservedByType() {
-        return reservedByType;
+        return RESERVED_BY_TYPE;
     }
     public String getReservedByName() {
-        return reservedByName;
+        return RESERVED_BY_NAME;
     }
 
-    public static class Builder {
+    public static class QuestBuilder {
         private String questName;
         private String reservationStatus;
         private String reservedByType;
         private String reservedByName;
 
-        public Builder setQuestName(String questName) {
+        public QuestBuilder setQuestName(String questName) {
             this.questName = questName;
             return this;
         }
 
-        public Builder setReservationStatus(String reservationStatus) {
+        public QuestBuilder setReservationStatus(String reservationStatus) {
             this.reservationStatus = reservationStatus;
             return this;
         }
 
-        public Builder setReservedByType(String reservedByType) {
+        public QuestBuilder setReservedByType(String reservedByType) {
             this.reservedByType = reservedByType;
             return this;
         }
 
-        public Builder setReservedByName(String reservedByName) {
+        public QuestBuilder setReservedByName(String reservedByName) {
             this.reservedByName = reservedByName;
             return this;
         }
