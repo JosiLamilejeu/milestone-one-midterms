@@ -1,42 +1,48 @@
 public class User {
-    private final String username;
-    private final String password;
-    private final String role;
-    private final String rank;
-    private final String race;
-    private final String userClass;
-    
-    public User(String username, String password, String role, String rank, String race, String userClass) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.rank = rank;
-        this.race = race;
-        this.userClass = userClass;
+    private final String USERNAME;
+    private final String PASSWORD;
+    private final String ROLE;
+
+    private User(UserBuilder builder) {
+        this.USERNAME = builder.username;
+        this.PASSWORD = builder.password;
+        this.ROLE = builder.role;
     }
     
     public String getUsername() {
-        return username;
+        return USERNAME;
     }
-    
+
     public String getPassword() {
-        return password;
+        return PASSWORD;
     }
-    
+
     public String getRole() {
-        return role;
+        return ROLE;
     }
-    
-    public String getRank() {
-        return rank;
+
+    public static class UserBuilder {
+        private String username;
+        private String password;
+        private String role;
+
+        public UserBuilder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public UserBuilder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder setRole(String role) {
+            this.role = role;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
-    
-    public String getRace() {
-        return race;
-    }
-    
-    public String getUserClass() {
-        return userClass;
-    }
-    
 }
