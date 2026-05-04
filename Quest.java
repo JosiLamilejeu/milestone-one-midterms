@@ -1,16 +1,18 @@
-package studentdatabase.task3.m1;
+package com.mycompany.milestoneone;
 
 public class Quest {
     private final String QUEST_NAME;
     private final String RESERVATION_STATUS;
     private final String RESERVED_BY_TYPE;
     private final String RESERVED_BY_NAME;
+    private final double RESERVATION_FEE;
 
     private Quest(QuestBuilder builder) {
         this.QUEST_NAME = builder.questName;
         this.RESERVATION_STATUS = builder.reservationStatus;
         this.RESERVED_BY_TYPE = builder.reservedByType;
         this.RESERVED_BY_NAME = builder.reservedByName;
+        this.RESERVATION_FEE = builder.reservationFee;
     }
 
     public String getQuestName() {
@@ -25,12 +27,16 @@ public class Quest {
     public String getReservedByName() {
         return RESERVED_BY_NAME;
     }
+    public double getReservationFee() {
+        return RESERVATION_FEE;
+    }
 
     public static class QuestBuilder {
         private String questName;
         private String reservationStatus;
         private String reservedByType;
         private String reservedByName;
+        private double reservationFee;
 
         public QuestBuilder setQuestName(String questName) {
             this.questName = questName;
@@ -49,6 +55,11 @@ public class Quest {
 
         public QuestBuilder setReservedByName(String reservedByName) {
             this.reservedByName = reservedByName;
+            return this;
+        }
+        
+        public QuestBuilder setReservationFee(double reservationFee) {
+            this.reservationFee = reservationFee;
             return this;
         }
 
