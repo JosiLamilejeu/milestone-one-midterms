@@ -5,14 +5,10 @@ import java.util.*;
 public class MilestoneOne {
     public static void main(String[] args) {
 
-        Database db = new Database();
-        db.connect();
-
         Scanner s = new Scanner(System.in);
+        Repository repo = new Repository.RepositoryBuilder().setDatabasePath().build();
 
-        Repository repo = new Repository();
-        GuildSystem gldsys = new GuildSystem(repo);
-        AdminSystem admnsys = new AdminSystem();
+        repo.clearCurrentUser();
 
         boolean mainMenu = true;
 
@@ -35,14 +31,14 @@ public class MilestoneOne {
                     System.out.print("Password: ");
                     String password = s.nextLine();
 
-                    User user = gldsys.loginUser(username, password);
+                    User user = repo.findByCredentials(username, password);
 
                     if (user != null) {
                         System.out.println("\nLogin successful!");
                         System.out.println("Welcome, " + user.getUsername());
                         System.out.println("Role detected: " + user.getRole());
 
-                        gldsys.saveConfig(username, password, user.getRole());
+                        repo.saveConfig(username, password, user.getRole());
 
                         String option;
                         String questName;
@@ -56,13 +52,14 @@ public class MilestoneOne {
                                 while (guildmasterMenu) {
                                     System.out.println("\n=== GUILDMASTER MENU ===");
                                     System.out.println("1. Register Receptionist");
-                                    System.out.println("2. Remove Receptionist");
-                                    System.out.println("3. Remove Adventurer");
-                                    System.out.println("4. Remove Adventurer from a Party");
-                                    System.out.println("5. Remove Party");
-                                    System.out.println("6. Remove Quest");
-                                    System.out.println("7. Remove Quest Reservation");
-                                    System.out.println("8. Log out");
+                                    System.out.println("2. View Registered Receptionists");
+                                    System.out.println("3. Remove Receptionist");
+                                    System.out.println("4. Remove Adventurer");
+                                    System.out.println("5. Remove Adventurer from a Party");
+                                    System.out.println("6. Remove Party");
+                                    System.out.println("7. Remove Quest");
+                                    System.out.println("8. Remove Quest Reservation");
+                                    System.out.println("9. Log out");
                                     System.out.print("Choice: ");
                                     choice = s.nextInt();
                                     s.nextLine();
@@ -75,80 +72,92 @@ public class MilestoneOne {
                                             System.out.print("Password of the Receptionist: ");
                                             String receptionistPassword = s.nextLine();
 
-                                            admnsys.addUser(receptionistUsername, receptionistPassword, "receptionist");
+                                            if (repo.addUser(receptionistUsername, receptionistPassword, "receptionist")) {
+                                                System.out.println("Receptionist registered successfully!");
+                                            } else {
+                                                System.out.println("Failed to register receptionist.");
+                                            }
                                             break;
 
                                         case 2:
+                                            if (repo.viewRegisteredReceptionists()) {
+                                                System.out.println("Receptionist list loaded successfully.");
+                                            } else {
+                                                System.out.println("No registered receptionists found.");
+                                            }
+                                            break;
+
+                                        case 3:
                                             System.out.print("Enter receptionist username to remove: ");
                                             username = s.nextLine();
 
-                                            if (admnsys.removeReceptionist(username)) {
+                                            if (repo.removeReceptionist(username)) {
                                                 System.out.println("Receptionist removed successfully.");
                                             } else {
                                                 System.out.println("Failed to remove receptionist.");
                                             }
                                             break;
 
-                                        case 3:
+                                        case 4:
                                             System.out.print("Enter adventurer username to remove: ");
                                             username = s.nextLine();
 
-                                            if (admnsys.removeAdventurer(username)) {
+                                            if (repo.removeAdventurer(username)) {
                                                 System.out.println("Adventurer removed successfully.");
                                             } else {
                                                 System.out.println("Failed to remove adventurer.");
                                             }
                                             break;
 
-                                        case 4:
+                                        case 5:
                                             System.out.print("Enter party name: ");
                                             partyName = s.nextLine();
 
                                             System.out.print("Enter adventurer username to remove from party: ");
                                             username = s.nextLine();
 
-                                            if (admnsys.removeAdventurerFromParty(username, partyName)) {
+                                            if (repo.removeAdventurerFromParty(username, partyName)) {
                                                 System.out.println("Adventurer removed from party successfully.");
                                             } else {
                                                 System.out.println("Failed to remove adventurer from party.");
                                             }
                                             break;
 
-                                        case 5:
+                                        case 6:
                                             System.out.print("Enter party name to remove: ");
                                             partyName = s.nextLine();
 
-                                            if (admnsys.removeParty(partyName)) {
+                                            if (repo.removeParty(partyName)) {
                                                 System.out.println("Party removed successfully.");
                                             } else {
                                                 System.out.println("Failed to remove party.");
                                             }
                                             break;
 
-                                        case 6:
+                                        case 7:
                                             System.out.print("Enter quest name to remove: ");
                                             questName = s.nextLine();
 
-                                            if (admnsys.removeQuest(questName)) {
+                                            if (repo.removeQuest(questName)) {
                                                 System.out.println("Quest removed successfully.");
                                             } else {
                                                 System.out.println("Failed to remove quest.");
                                             }
                                             break;
 
-                                        case 7:
+                                        case 8:
                                             System.out.print("Enter quest name to remove reservation: ");
                                             questName = s.nextLine();
 
-                                            if (admnsys.removeReservation(questName)) {
+                                            if (repo.removeReservation(questName)) {
                                                 System.out.println("Reservation removed successfully.");
                                             } else {
                                                 System.out.println("Failed to remove reservation.");
                                             }
                                             break;
 
-                                        case 8:
-                                            if (gldsys.logoutUser()) {
+                                        case 9:
+                                            if (repo.logoutUser()) {
                                                 guildmasterMenu = false;
                                                 System.out.println("Logged out successfully.");
                                             } else {
@@ -170,12 +179,13 @@ public class MilestoneOne {
                                 while (receptionistMenu) {
                                     System.out.println("\n=== RECEPTIONIST MENU ===");
                                     System.out.println("1. Register Adventurer");
-                                    System.out.println("2. Update Adventurer");
-                                    System.out.println("3. Create Party");
-                                    System.out.println("4. Add Party Member");
-                                    System.out.println("5. Create Quest");
-                                    System.out.println("6. Update Quests");
-                                    System.out.println("7. Log out");
+                                    System.out.println("2. View Registered Adventurers");
+                                    System.out.println("3. Update Adventurer");
+                                    System.out.println("4. Create Party");
+                                    System.out.println("5. Add Party Member");
+                                    System.out.println("6. Create Quest");
+                                    System.out.println("7. Update Quests");
+                                    System.out.println("8. Log out");
                                     System.out.print("Choice: ");
                                     choice = s.nextInt();
                                     s.nextLine();
@@ -201,39 +211,50 @@ public class MilestoneOne {
                                                 System.out.print("Class of the Adventurer: ");
                                                 String adventurerClass = s.nextLine();
 
-                                                admnsys.addAdventurer(adventurerUsername, adventurerPassword, adventurerRace, adventurerClass);
-                                                System.out.println("Adventurer Registered!");
+                                                if (repo.addAdventurer(adventurerUsername, adventurerPassword, adventurerRace, adventurerClass)) {
+                                                    System.out.println("Adventurer registered successfully!");
+                                                } else {
+                                                    System.out.println("Failed to register adventurer.");
+                                                }
                                             } else {
-                                                System.out.println("Age is not appropriate");
+                                                System.out.println("Age is not appropriate.");
                                             }
                                             break;
 
                                         case 2:
+                                            if (repo.viewRegisteredAdventurers()) {
+                                                System.out.println("Adventurer list loaded successfully.");
+                                            } else {
+                                                System.out.println("No registered adventurers found.");
+                                            }
+                                            break;
+
+                                        case 3:
                                             System.out.print("Enter adventurer username: ");
                                             username = s.nextLine();
 
                                             System.out.print("Enter new rank: ");
                                             String newRank = s.nextLine();
 
-                                            if (gldsys.updateAdventurerRank(username, newRank)) {
+                                            if (repo.updateAdventurerRank(username, newRank)) {
                                                 System.out.println("Adventurer rank updated successfully!");
                                             } else {
                                                 System.out.println("Failed to update adventurer rank.");
                                             }
                                             break;
 
-                                        case 3:
+                                        case 4:
                                             System.out.print("Name of the party: ");
                                             partyName = s.nextLine();
 
-                                            if (admnsys.addParty(partyName)) {
+                                            if (repo.addParty(partyName)) {
                                                 System.out.println("Party created successfully!");
 
                                                 do {
                                                     System.out.print("Enter member username: ");
                                                     username = s.nextLine();
 
-                                                    if (admnsys.addPartyMember(partyName, username)) {
+                                                    if (repo.addPartyMember(partyName, username)) {
                                                         System.out.println("Member added successfully!");
                                                     } else {
                                                         System.out.println("Failed to add member.");
@@ -243,10 +264,12 @@ public class MilestoneOne {
                                                     option = s.nextLine();
 
                                                 } while (option.equalsIgnoreCase("yes"));
+                                            } else {
+                                                System.out.println("Failed to create party.");
                                             }
                                             break;
 
-                                        case 4:
+                                        case 5:
                                             System.out.print("Enter existing party name: ");
                                             partyName = s.nextLine();
 
@@ -254,7 +277,7 @@ public class MilestoneOne {
                                                 System.out.print("Enter username to add: ");
                                                 username = s.nextLine();
 
-                                                if (admnsys.addPartyMember(partyName, username)) {
+                                                if (repo.addPartyMember(partyName, username)) {
                                                     System.out.println("Member added successfully!");
                                                 } else {
                                                     System.out.println("Failed to add member.");
@@ -266,12 +289,12 @@ public class MilestoneOne {
                                             } while (option.equalsIgnoreCase("yes"));
                                             break;
 
-                                        case 5:
+                                        case 6:
                                             do {
                                                 System.out.print("Enter quest name: ");
                                                 questName = s.nextLine();
 
-                                                if (admnsys.addQuest(questName)) {
+                                                if (repo.addQuest(questName)) {
                                                     System.out.println("Quest added successfully!");
                                                 } else {
                                                     System.out.println("Failed to add quest.");
@@ -283,19 +306,19 @@ public class MilestoneOne {
                                             } while (option.equalsIgnoreCase("yes"));
                                             break;
 
-                                        case 6:
+                                        case 7:
                                             System.out.print("Enter quest name to mark as completed: ");
                                             questName = s.nextLine();
 
-                                            if (gldsys.completeQuest(questName)) {
+                                            if (repo.completeQuest(questName)) {
                                                 System.out.println("Quest marked as completed!");
                                             } else {
                                                 System.out.println("Failed to complete quest.");
                                             }
                                             break;
 
-                                        case 7:
-                                            if (gldsys.logoutUser()) {
+                                        case 8:
+                                            if (repo.logoutUser()) {
                                                 receptionistMenu = false;
                                                 System.out.println("Logged out successfully.");
                                             } else {
@@ -327,11 +350,20 @@ public class MilestoneOne {
 
                                     switch (choice) {
                                         case 1:
-                                            repo.viewQuestList();
+                                            System.out.println("\nFetching quest list...");
+                                            if (repo.viewQuestList()) {
+                                                System.out.println("Quest list loaded successfully.");
+                                            } else {
+                                                System.out.println("No quests found.");
+                                            }
                                             break;
 
                                         case 2:
-                                            repo.viewQuestList();
+                                            if (!repo.viewQuestList()) {
+                                                System.out.println("No quests available.");
+                                                break;
+                                            }
+
                                             System.out.print("Enter quest name: ");
                                             questName = s.nextLine();
 
@@ -341,7 +373,7 @@ public class MilestoneOne {
                                                 System.out.println("You are not in a party.");
                                                 System.out.println("Reserving quest as adventurer...");
 
-                                                if (gldsys.reserveQuestByAdventurer(questName, user.getUsername())) {
+                                                if (repo.reserveQuestByAdventurer(questName, user.getUsername())) {
                                                     System.out.println("Quest reserved successfully!");
                                                 } else {
                                                     System.out.println("Failed to reserve quest.");
@@ -357,18 +389,18 @@ public class MilestoneOne {
 
                                                 switch (reserveChoice) {
                                                     case 1:
-                                                        if (gldsys.reserveQuestByAdventurer(questName, user.getUsername())) {
+                                                        if (repo.reserveQuestByAdventurer(questName, user.getUsername())) {
                                                             System.out.println("Quest reserved successfully for yourself!");
                                                         } else {
-                                                            System.out.println("Failed to reserve quest.");
+                                                            System.out.println("Failed to reserve quest for yourself.");
                                                         }
                                                         break;
 
                                                     case 2:
-                                                        if (gldsys.reserveQuestByParty(questName, partyName)) {
+                                                        if (repo.reserveQuestByParty(questName, partyName)) {
                                                             System.out.println("Quest reserved successfully for party!");
                                                         } else {
-                                                            System.out.println("Failed to reserve quest.");
+                                                            System.out.println("Failed to reserve quest for party.");
                                                         }
                                                         break;
 
@@ -380,19 +412,29 @@ public class MilestoneOne {
                                             break;
 
                                         case 3:
-                                            repo.viewCurrentUserPartyList(user.getUsername());
+                                            System.out.println("\nFetching your party details...");
+                                            if (repo.viewCurrentUserPartyList(user.getUsername())) {
+                                                System.out.println("Party details loaded successfully.");
+                                            } else {
+                                                System.out.println("You are not in any party.");
+                                            }
                                             break;
 
                                         case 4:
                                             if (user != null && user.getRole().equalsIgnoreCase("adventurer")) {
-                                                repo.viewCurrentAdventurerDetails(user.getUsername());
+                                                System.out.println("\nFetching your profile...");
+                                                if (repo.viewCurrentAdventurerDetails(user.getUsername())) {
+                                                    System.out.println("Profile loaded successfully.");
+                                                } else {
+                                                    System.out.println("No adventurer details found.");
+                                                }
                                             } else {
                                                 System.out.println("Only adventurers can view adventurer details.");
                                             }
                                             break;
 
                                         case 5:
-                                            if (gldsys.logoutUser()) {
+                                            if (repo.logoutUser()) {
                                                 adventurerMenu = false;
                                                 System.out.println("Logged out successfully.");
                                             } else {
@@ -422,7 +464,7 @@ public class MilestoneOne {
                     break;
 
                 default:
-                    System.out.println("Invalid Choice!");
+                    System.out.println("Invalid choice.");
                     break;
             }
         }
